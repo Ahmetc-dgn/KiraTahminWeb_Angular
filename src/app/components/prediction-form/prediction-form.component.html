@@ -1,0 +1,102 @@
+<div class="prediction-container">
+  <div class="prediction-card">
+    <h2>Ev Fiyat Tahmini</h2>
+    
+    <form [formGroup]="predictionForm" (ngSubmit)="onSubmit()" class="prediction-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="squareFeet">Metrekare</label>
+          <input type="number" id="squareFeet" formControlName="squareFeet" placeholder="Örn: 120">
+          <div class="error-message" *ngIf="predictionForm.get('squareFeet')?.errors?.['required'] && predictionForm.get('squareFeet')?.touched">
+            Metrekare alanı zorunludur
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="numBedrooms">Yatak Odası Sayısı</label>
+          <input type="number" id="numBedrooms" formControlName="numBedrooms" placeholder="Örn: 3">
+          <div class="error-message" *ngIf="predictionForm.get('numBedrooms')?.errors?.['required'] && predictionForm.get('numBedrooms')?.touched">
+            Yatak odası sayısı zorunludur
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="numBathrooms">Banyo Sayısı</label>
+          <input type="number" id="numBathrooms" formControlName="numBathrooms" placeholder="Örn: 2">
+          <div class="error-message" *ngIf="predictionForm.get('numBathrooms')?.errors?.['required'] && predictionForm.get('numBathrooms')?.touched">
+            Banyo sayısı zorunludur
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Konum (1-10)</label>
+          <input type="number" id="location" formControlName="location" min="1" max="10" placeholder="Örn: 7">
+          <div class="error-message" *ngIf="predictionForm.get('location')?.errors?.['required'] && predictionForm.get('location')?.touched">
+            Konum zorunludur
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ageOfHouse">Ev Yaşı</label>
+          <input type="number" id="ageOfHouse" formControlName="ageOfHouse" placeholder="Örn: 5">
+          <div class="error-message" *ngIf="predictionForm.get('ageOfHouse')?.errors?.['required'] && predictionForm.get('ageOfHouse')?.touched">
+            Ev yaşı zorunludur
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="floor">Kat</label>
+          <input type="number" id="floor" formControlName="floor" placeholder="Örn: 3">
+          <div class="error-message" *ngIf="predictionForm.get('floor')?.errors?.['required'] && predictionForm.get('floor')?.touched">
+            Kat bilgisi zorunludur
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="buildingType">Bina Tipi (1-5)</label>
+          <input type="number" id="buildingType" formControlName="buildingType" min="1" max="5" placeholder="Örn: 2">
+          <div class="error-message" *ngIf="predictionForm.get('buildingType')?.errors?.['required'] && predictionForm.get('buildingType')?.touched">
+            Bina tipi zorunludur
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row checkbox-group">
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="hasGarage">
+            Garaj
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="hasGarden">
+            Bahçe
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="!predictionForm.valid || isLoading" class="submit-button">
+        {{ isLoading ? 'Tahmin Yapılıyor...' : 'Fiyat Tahmini Yap' }}
+      </button>
+    </form>
+
+    <div class="result-container" *ngIf="predictionResult !== null || errorMessage">
+      <div class="result-card" *ngIf="predictionResult !== null">
+        <h3>Tahmini Fiyat</h3>
+        <p class="price">{{ predictionResult | number:'1.0-0' }} Bin TL</p>
+      </div>
+
+      <div class="error-card" *ngIf="errorMessage">
+        <p class="error-message">{{ errorMessage }}</p>
+      </div>
+    </div>
+  </div>
+</div> 
