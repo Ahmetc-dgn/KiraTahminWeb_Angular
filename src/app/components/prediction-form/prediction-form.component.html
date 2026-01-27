@@ -1,0 +1,160 @@
+<div class="prediction-container">
+  <div class="prediction-card">
+    <div class="header">
+      <h1>🏠 Kira Tahmin Uygulaması</h1>
+      <p class="subtitle">AI destekli kira fiyat tahmini yapın</p>
+    </div>
+    
+    <form [formGroup]="predictionForm" (ngSubmit)="onSubmit()" class="prediction-form">
+      <div class="form-section">
+        <h3 class="section-title">📐 Temel Bilgiler</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="squareFeet">
+              <span class="icon">📏</span>
+              Metrekare (m²)
+            </label>
+            <input type="number" id="squareFeet" formControlName="squareFeet" placeholder="Örn: 120" min="1">
+            <div class="error-message" *ngIf="predictionForm.get('squareFeet')?.errors?.['required'] && predictionForm.get('squareFeet')?.touched">
+              Metrekare alanı zorunludur
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="numBedrooms">
+              <span class="icon">🛏️</span>
+              Yatak Odası Sayısı
+            </label>
+            <input type="number" id="numBedrooms" formControlName="numBedrooms" placeholder="Örn: 3" min="0">
+            <div class="error-message" *ngIf="predictionForm.get('numBedrooms')?.errors?.['required'] && predictionForm.get('numBedrooms')?.touched">
+              Yatak odası sayısı zorunludur
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="numBathrooms">
+              <span class="icon">🚿</span>
+              Banyo Sayısı
+            </label>
+            <input type="number" id="numBathrooms" formControlName="numBathrooms" placeholder="Örn: 2" min="0">
+            <div class="error-message" *ngIf="predictionForm.get('numBathrooms')?.errors?.['required'] && predictionForm.get('numBathrooms')?.touched">
+              Banyo sayısı zorunludur
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="floor">
+              <span class="icon">🏢</span>
+              Kat Numarası
+            </label>
+            <input type="number" id="floor" formControlName="floor" placeholder="Örn: 3" min="0">
+            <div class="error-message" *ngIf="predictionForm.get('floor')?.errors?.['required'] && predictionForm.get('floor')?.touched">
+              Kat bilgisi zorunludur
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">📍 Konum ve Özellikler</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="location">
+              <span class="icon">📍</span>
+              Konum Skoru (1-10)
+            </label>
+            <select id="location" formControlName="location" class="select-input">
+              <option value="">Konum seçin</option>
+              <option value="1">1 - Çok Düşük</option>
+              <option value="2">2 - Düşük</option>
+              <option value="3">3 - Orta-Düşük</option>
+              <option value="4">4 - Orta</option>
+              <option value="5">5 - Orta-İyi</option>
+              <option value="6">6 - İyi</option>
+              <option value="7">7 - Çok İyi</option>
+              <option value="8">8 - Mükemmel</option>
+              <option value="9">9 - Çok Mükemmel</option>
+              <option value="10">10 - Premium</option>
+            </select>
+            <div class="error-message" *ngIf="predictionForm.get('location')?.errors?.['required'] && predictionForm.get('location')?.touched">
+              Konum zorunludur
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="buildingType">
+              <span class="icon">🏗️</span>
+              Bina Tipi
+            </label>
+            <select id="buildingType" formControlName="buildingType" class="select-input">
+              <option value="">Bina tipi seçin</option>
+              <option value="1">1 - Müstakil</option>
+              <option value="2">2 - Villa</option>
+              <option value="3">3 - Apartman</option>
+              <option value="4">4 - Residans</option>
+              <option value="5">5 - Site İçi</option>
+            </select>
+            <div class="error-message" *ngIf="predictionForm.get('buildingType')?.errors?.['required'] && predictionForm.get('buildingType')?.touched">
+              Bina tipi zorunludur
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ageOfHouse">
+              <span class="icon">📅</span>
+              Ev Yaşı
+            </label>
+            <input type="number" id="ageOfHouse" formControlName="ageOfHouse" placeholder="Örn: 5" min="0">
+            <div class="error-message" *ngIf="predictionForm.get('ageOfHouse')?.errors?.['required'] && predictionForm.get('ageOfHouse')?.touched">
+              Ev yaşı zorunludur
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">✨ Ekstra Özellikler</h3>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="hasGarage">
+            <span class="checkbox-custom"></span>
+            <span class="checkbox-text">🚗 Garaj</span>
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="hasGarden">
+            <span class="checkbox-custom"></span>
+            <span class="checkbox-text">🌳 Bahçe</span>
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="!predictionForm.valid || isLoading" class="submit-button">
+        <span *ngIf="!isLoading">💰 Kira Fiyatı Tahmin Et</span>
+        <span *ngIf="isLoading" class="loading">
+          <span class="spinner"></span>
+          Tahmin yapılıyor...
+        </span>
+      </button>
+    </form>
+
+    <div class="result-container" *ngIf="predictionResult !== null || errorMessage">
+      <div class="result-card success" *ngIf="predictionResult !== null">
+        <div class="result-icon">✅</div>
+        <h3>Tahmini Kira Fiyatı</h3>
+        <p class="price">{{ predictionResult | number:'1.0-0' }} Bin TL</p>
+        <p class="price-subtitle">Aylık kira bedeli (İstanbul piyasası)</p>
+      </div>
+
+      <div class="result-card error" *ngIf="errorMessage">
+        <div class="result-icon">❌</div>
+        <h3>Hata</h3>
+        <p class="error-message">{{ errorMessage }}</p>
+      </div>
+    </div>
+  </div>
+</div> 
